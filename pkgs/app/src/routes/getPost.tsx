@@ -67,9 +67,9 @@ export const getPost: Handler<
       <Post
         post={fetchedPost}
         url={c.req.path}
-        appDomain={c.env.VIXBLUESKY_APP_DOMAIN}
+        appDomain={process.env.VIXBLUESKY_APP_DOMAIN}
         videoMetadata={videoMetaData}
-        apiUrl={c.env.VIXBLUESKY_API_URL}
+        apiUrl={process.env.VIXBLUESKY_API_URL}
         images={images}
       />,
     );

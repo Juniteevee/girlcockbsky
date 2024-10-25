@@ -11,8 +11,8 @@ export const getOEmbed: Handler<Env, '/oembed'> = async (c) => {
   const avatar = c.req.query('avatar');
 
   const defaults = {
-    provider_name: 'VixBluesky',
-    provider_url: 'https://bskyx.app/',
+    provider_name: 'girlcockbsky',
+    provider_url: 'https://girlcockbsky.app/',
     thumbnail_width: 1000,
     thumbnail_height: 1000,
   };
@@ -42,7 +42,7 @@ export const getOEmbed: Handler<Env, '/oembed'> = async (c) => {
     const { replies, reposts, likes, description } = c.req.query();
     return c.json({
       ...defaults,
-      provider_name: `VixBluesky\n\n🗨️ ${replies}    ♻️ ${reposts}    💙 ${likes}`,
+      provider_name: `girlcockbsky\n\n🗨️ ${replies}    ♻️ ${reposts}    💙 ${likes}`,
       description,
       title: description,
       author_name: description,

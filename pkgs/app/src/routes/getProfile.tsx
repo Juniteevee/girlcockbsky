@@ -21,7 +21,7 @@ export const getProfile: Handler<
     <Profile
       profile={data}
       url={c.req.path}
-      appDomain={c.env.VIXBLUESKY_APP_DOMAIN}
+      appDomain={process.env.VIXBLUESKY_APP_DOMAIN}
     />,
   );
 };

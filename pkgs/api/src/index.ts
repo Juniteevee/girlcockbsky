@@ -22,17 +22,18 @@ declare global {
     interface ProcessEnv {
       readonly NODE_ENV: Env;
       readonly PORT: string | undefined;
+      readonly EMPTY_REDIR: string;
     }
   }
 }
 
-const { NODE_ENV: env = "development", PORT } = process.env;
+const { NODE_ENV: env = "development", PORT, EMPTY_REDIR } = process.env;
 
 const app = fastify({ logger: envToLogger[env] });
 
 app.addContentTypeParser("*", (_, __, done) => done(null));
 
-app.get("/", async (_, res) => res.redirect("https://bskyx.app"));
+app.get("/", async (_, res) => res.redirect(EMPTY_REDIR));
 
 // serve 0 bytes favicon so browsers don't spam the server
 app.get("/favicon.ico", (_, res) => res.send(""));

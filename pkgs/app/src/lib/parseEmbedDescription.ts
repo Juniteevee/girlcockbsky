@@ -8,7 +8,9 @@ export function parseEmbedDescription(post: AppBskyFeedDefs.PostView): string {
       checkType('app.bsky.embed.recordWithMedia#view', post.embed));
 
   // @ts-expect-error
-  const embed = post.embed.record?.record ?? post.embed.record;
+  let embed;
+  if(isQuote)
+    embed = post.embed.record?.record ?? post.embed.record;
 
   return isQuote
     ? // @ts-expect-error
