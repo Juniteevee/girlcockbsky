@@ -1,0 +1,28 @@
+services:
+  api:
+    build:
+      context: ./pkgs/api/.
+      dockerfile: Dockerfile
+    ports:
+      - "2598:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+      - EMPTY_REDIR=https://bsky.app/profile/juni.pet/post/3l3e53fzazy2n
+    restart: unless-stopped
+  app:
+    build:
+      context: ./pkgs/app/.
+      dockerfile: Dockerfile
+    ports:
+      - "2599:3000"
+    environment:
+      - BSKY_SERVICE_URL=https://bsky.social
+      - VIXBLUESKY_APP_DOMAIN=girlcockbsky.app
+      - VIXBLUESKY_API_URL=http://localhost:2598/
+      - BSKY_AUTH_USERNAME=YOUR_OWN_USERNAME
+      - BSKY_AUTH_PASSWORD=YOUR_APP_PASSWORD_SHOULD_COME_FROM_ENV
+      - PORT=3000
+      - EMPTY_REDIR=https://bsky.app/profile/juni.pet/post/3l3e53fzazy2n
+    restart: unless-stopped
+

@@ -6,7 +6,8 @@
     "@atcute/bluesky": "^1.0.7",
     "@atcute/client": "^2.0.3",
     "hono": "^4.5.1",
-    "@hono/node-server": "^1.13.2"
+    "@hono/node-server": "^1.13.2",
+    "node-cache": "^5.1.2"
   },
   "devDependencies": {
     "@cloudflare/workers-types": "^4.20230628.0",

@@ -8,19 +8,36 @@ import { getOEmbed } from './routes/getOEmbed';
 import { getProfileData } from './routes/getProfileData';
 import { getProfile } from './routes/getProfile';
 import { HTTPException } from 'hono/http-exception';
+const NodeCache = require( "node-cache" );
 
 const app = new Hono();
-const bskyxC: any = {};
+const myCache = new NodeCache();
 
 app.use('*', async (c, next) => {
-  const creds = new CredentialManager({service: process.env.BSKY_SERVICE_URL});
+  const creds = new CredentialManager({
+    service: process.env.BSKY_SERVICE_URL,
+    onRefresh(session) {
+      return myCache.set('session', JSON.stringify(session));
+    },
+    onExpired(session) {
+      return myCache.del('session');
+    },
+    onSessionUpdate(session) {
+      return myCache.set('session', JSON.stringify(session));
+    },
+  });
   const agent = new XRPC({ handler: creds });
   try {
-    await creds.login({
-      identifier: process.env.BSKY_AUTH_USERNAME,
-      password: process.env.BSKY_AUTH_PASSWORD,
-    });
-    console.log(creds.session);
+    const rawSession = myCache.get('session');
+    if(rawSession) {
+      const session = JSON.parse(rawSession) as AtpSessionData;
+      await creds.resume(session);
+    } else {
+      await creds.login({
+        identifier: process.env.BSKY_AUTH_USERNAME,
+        password: process.env.BSKY_AUTH_PASSWORD,
+      });
+    }
     c.set('Agent', agent);
   } catch (error) {
     const err = new Error('Failed to login to Bluesky!', {
